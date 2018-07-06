@@ -8,13 +8,28 @@ Create a folder 'lib' in the project root, and add the UserModule.jar in it.
 
 Add the following dependency:
 ```
+<repositories>
+    <repository>
+    	<id>jitpack.io</id>
+    	<url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
 <dependency>
-    <groupId>com.erikschouten</groupId>
-    <artifactId>UserModule</artifactId>
+    <groupId>com.github.ESchouten</groupId>
+    <artifactId>SpringUserModule</artifactId>
     <version>0.1.1</version>
-    <scope>system</scope>
-    <systemPath>${project.basedir}/lib/UserModule.jar</systemPath>
 </dependency>
+```
+**Gradle:**
+```
+repositories {
+	maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+	implementation 'com.github.ESchouten:SpringUserModule:0.1.1'
+}
 ```
 ## Implementation
 Configure the endpoint access rights in the Spring Security Config.
