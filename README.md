@@ -11,7 +11,7 @@ Add the following dependency:
 <dependency>
     <groupId>com.erikschouten</groupId>
     <artifactId>UserModule</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <scope>system</scope>
     <systemPath>${project.basedir}/lib/UserModule.jar</systemPath>
 </dependency>
