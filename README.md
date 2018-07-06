@@ -4,8 +4,6 @@ Spring module for user management.
 ## Dependency
 **Maven:**
 
-Create a folder 'lib' in the project root, and add the UserModule.jar in it.
-
 Add the following dependency:
 ```
 <repositories>
