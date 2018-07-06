@@ -16,16 +16,6 @@ Add the following dependency:
     <systemPath>${project.basedir}/lib/UserModule.jar</systemPath>
 </dependency>
 ```
-**Gradle:**
-```
-repositories {
-	maven { url 'https://jitpack.io' }
-}
-
-dependencies {
-	implementation 'com.github.ESchouten:SpringJWTAuthenticator:0.1.6'
-}
-```
 ## Implementation
 Configure the endpoint access rights in the Spring Security Config.
 
@@ -40,6 +30,13 @@ Configure the endpoint access rights in the Spring Security Config.
                     .mvcMatchers("/user").hasRole("USERS")
                 
                 **Etc**
+```
+Add the libraries to the componentscans:
+```
+@SpringBootApplication(scanBasePackages = ["com.erikschouten.usermodule", ...])
+@EntityScan(basePackages = ["com.erikschouten.usermodule", ...])
+@EnableJpaRepositories(basePackages = ["com.erikschouten.usermodule.repository", ...])
+
 ```
 ## Built with
 * Spring Security - https://spring.io/
