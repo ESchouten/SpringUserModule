@@ -16,7 +16,7 @@ Add the following dependency:
 <dependency>
     <groupId>com.github.ESchouten</groupId>
     <artifactId>SpringUserModule</artifactId>
-    <version>0.1.3</version>
+    <version>0.1.4</version>
 </dependency>
 ```
 **Gradle:**
@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'com.github.ESchouten:SpringUserModule:0.1.3'
+	implementation 'com.github.ESchouten:SpringUserModule:0.1.4'
 }
 ```
 ## Implementation
