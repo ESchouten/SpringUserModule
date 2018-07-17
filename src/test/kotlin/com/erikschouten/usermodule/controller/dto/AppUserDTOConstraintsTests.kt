@@ -2,7 +2,6 @@ package com.erikschouten.usermodule.controller.dto
 
 import com.erikschouten.usermodule.controller.dto.`in`.*
 import com.erikschouten.usermodule.controller.dto.out.AppUserDTO
-import com.erikschouten.usermodule.model.Authority
 import org.junit.Before
 import org.junit.Test
 import java.util.*
@@ -35,13 +34,13 @@ class AppUserDTOConstraintsTests {
     @Test
     fun createAppUserDTO() {
         //Valid
-        var violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11@@", listOf(Authority.ROLE_USERS), false))
+        var violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11@@", listOf("ROLE_USERS"), false))
         assert(violations.isEmpty())
         //Invalid email
-        violations = validator.validate(CreateAppUserDTO("createAppUserTest@", "PAss11@@", listOf(Authority.ROLE_USERS), false))
+        violations = validator.validate(CreateAppUserDTO("createAppUserTest@", "PAss11@@", listOf("ROLE_USERS"), false))
         assert(violations.size == 1)
         //Invalid password
-        violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11asdfm", listOf(Authority.ROLE_USERS), false))
+        violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11asdfm", listOf("ROLE_USERS"), false))
         assert(violations.size == 1)
     }
 
@@ -68,10 +67,10 @@ class AppUserDTOConstraintsTests {
     @Test
     fun updateAppUserDTO() {
         //Valid
-        var violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@headon.nl", listOf(Authority.ROLE_USERS), false))
+        var violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@headon.nl", listOf("ROLE_USERS"), false))
         assert(violations.isEmpty())
         //Invalid email
-        violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@", listOf(Authority.ROLE_USERS), false))
+        violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@", listOf("ROLE_USERS"), false))
         assert(violations.size == 1)
     }
 

@@ -1,9 +1,5 @@
 package com.erikschouten.usermodule.controller
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.doThrow
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.customclasses.exceptions.NotFoundException
@@ -11,6 +7,10 @@ import com.erikschouten.usermodule.AppUserBuilder
 import com.erikschouten.usermodule.controller.dto.`in`.*
 import com.erikschouten.usermodule.service.AppUserService
 import com.erikschouten.usermodule.service.util.AppUserUtil
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.doThrow
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Test
 import org.springframework.http.HttpStatus
 import java.util.*

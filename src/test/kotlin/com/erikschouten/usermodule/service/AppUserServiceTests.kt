@@ -1,15 +1,14 @@
 package com.erikschouten.usermodule.service
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.whenever
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.usermodule.AppUserBuilder
 import com.erikschouten.usermodule.model.AppUser
-import com.erikschouten.usermodule.model.Authority
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
+import com.nhaarman.mockito_kotlin.any
+import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Test
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -70,7 +69,7 @@ class AppUserServiceTests {
         whenever(appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85")))
                 .thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
 
-        appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "appUserUpdateAdmin@gmail.com", setOf(SimpleGrantedAuthority(Authority.ROLE_USERS.toString())), false)
+        appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "appUserUpdateAdmin@gmail.com", setOf(SimpleGrantedAuthority("ROLE_USERS")), false)
     }
 
     @Test
@@ -89,7 +88,7 @@ class AppUserServiceTests {
         whenever(appUserUtil.emailInUse("invalidAppUserUpdate@gmail.com"))
                 .thenReturn(true)
 
-        appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "invalidAppUserUpdate@gmail.com", setOf(SimpleGrantedAuthority(Authority.ROLE_USERS.toString())), false)
+        appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "invalidAppUserUpdate@gmail.com", setOf(SimpleGrantedAuthority("ROLE_USERS")), false)
     }
 
     @Test
