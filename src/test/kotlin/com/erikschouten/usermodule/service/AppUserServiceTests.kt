@@ -48,6 +48,7 @@ class AppUserServiceTests {
         whenever(appUserUtil.emailInUse("appUserUpdate@gmail.com"))
                 .thenReturn(false)
         whenever(appUserUtil.findCurrent()).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
+        whenever(appUserRepository.save(any<AppUser>())).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
 
         appUserService.update("appUserUpdate@gmail.com")
     }
@@ -68,6 +69,8 @@ class AppUserServiceTests {
     fun appUserUpdateAdmin() {
         whenever(appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85")))
                 .thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
+        whenever(appUserRepository.save(any<AppUser>()))
+                .thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
 
         appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "appUserUpdateAdmin@gmail.com", setOf(SimpleGrantedAuthority("ROLE_USERS")), false)
     }
@@ -76,6 +79,7 @@ class AppUserServiceTests {
     fun appUserUpdateAdminEmailNoChange() {
         whenever(appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85")))
                 .thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
+        whenever(appUserRepository.save(any<AppUser>())).thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
 
         appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "appUserUpdateAdmin@headon.nl", emptySet(), true)
     }

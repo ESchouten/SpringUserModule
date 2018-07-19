@@ -33,11 +33,11 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     fun create(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean = false) =
             this.doCreate(email, password, roles, locked)
 
-    private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean) {
+    private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): AppUser {
         if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
 
         val appUser = AppUser(email = email, password = encoder.encode(password), authorities = roles, locked = locked)
-        appUserRepository.save(appUser)
+        return appUserRepository.save(appUser)
     }
 
     /**
@@ -56,12 +56,12 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      */
     fun update(id: UUID, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
-    private fun doUpdate(appUser: AppUser, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?) {
+    private fun doUpdate(appUser: AppUser, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
         if (appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
         appUser.email = email
         if (locked != null) appUser.locked = locked
         if (roles != null) appUser.authorities = roles
-        appUserRepository.save(appUser)
+        return appUserRepository.save(appUser)
     }
 
     /**
