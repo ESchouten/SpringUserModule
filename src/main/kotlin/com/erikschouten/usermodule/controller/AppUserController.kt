@@ -28,17 +28,6 @@ class AppUserController(private val appUserService: AppUserService,
         }
     }
 
-    @PostMapping
-    fun create(@RequestBody @Valid createAppUserDTO: CreateAppUserDTO): ResponseEntity<Void> {
-        return try {
-            appUserService.create(createAppUserDTO.email, createAppUserDTO.password,
-                    createAppUserDTO.authorities.map { SimpleGrantedAuthority(it.toString()) }.toSet(), createAppUserDTO.locked)
-            ResponseEntity.status(HttpStatus.CREATED).build()
-        } catch (ex: AlreadyExistsException) {
-            ResponseEntity.status(HttpStatus.CONFLICT).build()
-        }
-    }
-
     @PutMapping
     fun update(@RequestBody @Valid email: Email): ResponseEntity<Void> {
         return try {
