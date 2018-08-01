@@ -9,4 +9,4 @@ class AppUser(id: UUID = UUID.randomUUID(),
               email: String,
               password: String,
               authorities: Set<SimpleGrantedAuthority>,
-              locked: Boolean) : AbstractAppUser(id, email, password, authorities, locked)
+              locked: Boolean = false) : AbstractAppUser(id, email, password, authorities, locked)
