@@ -15,34 +15,7 @@ import kotlin.reflect.full.primaryConstructor
 @Service
 class AppUserService<T: AbstractAppUser>(private val appUserRepository: AppUserRepository<T>,
                                          private val appUserUtil: AppUserUtil<T>,
-                                         private val encoder: PasswordEncoder,
-                                         private val clss: KClass<T>) {
-
-    /**
-     * User functionality
-     * Creates AppUser with default User Authorities
-     *
-     * Used in registration
-     */
-    fun create(email: String, password: String) = this.doCreate(email, password,
-            kotlin.collections.emptySet(), false)
-
-    /**
-     * Admin functionality
-     * Creates AppUser with specified Authorities
-     *
-     * Used by Administrators account creation
-     */
-    fun create(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean = false) =
-            this.doCreate(email, password, roles, locked)
-
-    private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): T {
-        if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
-
-        val appUser = clss.primaryConstructor!!.call(UUID.randomUUID(), email, encoder.encode(password),roles, locked)
-
-        return appUserRepository.save(appUser)
-    }
+                                         private val encoder: PasswordEncoder) {
 
     /**
      * User functionality

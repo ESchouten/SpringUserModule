@@ -23,13 +23,6 @@ class AppUserControllerTest {
     private val appUserController = AppUserController(appUserService, appUserUtil)
 
     @Test
-    fun createTest() {
-        assert(appUserController.create(CreateAppUserDTO("createTest@headon.nl", "PAss22!!", emptyList(), false)).statusCode == HttpStatus.CREATED)
-        whenever(appUserService.create(any(), any(), any(), any())).doThrow(AlreadyExistsException::class)
-        assert(appUserController.create(CreateAppUserDTO("createTest@headon.nl", "PAss22!!", emptyList(), false)).statusCode == HttpStatus.CONFLICT)
-    }
-
-    @Test
     fun updateTest() {
         assert(appUserController.update(Email("updateTest@headon.nl")).statusCode == HttpStatus.ACCEPTED)
         whenever(appUserService.update(any())).doThrow(AlreadyExistsException::class)

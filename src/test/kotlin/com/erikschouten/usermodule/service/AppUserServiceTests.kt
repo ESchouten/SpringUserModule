@@ -22,26 +22,7 @@ class AppUserServiceTests {
     private val appUserRepository = mock<AppUserRepository<AppUser>>()
     private val appUserUtil = mock<AppUserUtil<AppUser>>()
     private val passwordEncoder = mock<PasswordEncoder>()
-    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder, AppUser::class)
-
-    @Test
-    fun validAppUserCreation() {
-        whenever(appUserUtil.get(any<String>())).thenReturn(AppUserBuilder(id = UUID.randomUUID(), email = "TransactionUserTestInvalid@headon.nl").build())
-        whenever(passwordEncoder.encode("p")).thenReturn("vErYsEcUrEpAsSwOrD")
-        whenever(appUserRepository.save(any<AppUser>()))
-                .thenReturn(AppUserBuilder(email = "validAppUserCreation@headon.nl").build())
-
-        appUserService.create("validAppUserCreation@headon.nl", "p")
-    }
-
-    @Test(expected = AlreadyExistsException::class)
-    fun appUserCreationWithExistingUsername() {
-        whenever(passwordEncoder.encode("p")).thenReturn("vErYsEcUrEpAsSwOrD")
-        whenever(appUserUtil.emailInUse("appUserCreationWithExistingUsername@headon.nl"))
-                .thenReturn(true)
-
-        appUserService.create("appUserCreationWithExistingUsername@headon.nl", "p")
-    }
+    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder)
 
     @Test
     fun appUserUpdate() {
