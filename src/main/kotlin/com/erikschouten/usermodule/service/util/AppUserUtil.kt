@@ -1,7 +1,7 @@
 package com.erikschouten.usermodule.service.util
 
 import com.erikschouten.customclasses.exceptions.NotFoundException
-import com.erikschouten.usermodule.model.AppUser
+import com.erikschouten.usermodule.model.AbstractAppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetailsService {
+class AppUserUtil<T: AbstractAppUser>(private val appUserRepository: AppUserRepository<T>) : UserDetailsService {
 
     /**
      * User functionality
@@ -23,13 +23,13 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
 
     fun emailInUse(email: String) = appUserRepository.findByEmail(email).isPresent
 
-    fun get(email: String): AppUser {
+    fun get(email: String): T {
         val optionalAppUser = appUserRepository.findByEmail(email)
         if (!optionalAppUser.isPresent) throw NotFoundException("User not found")
         return optionalAppUser.get()
     }
 
-    fun get(id: UUID): AppUser {
+    fun get(id: UUID): T {
         val optionalAppUser = appUserRepository.findById(id)
         if (!optionalAppUser.isPresent) throw NotFoundException("User not found")
         return optionalAppUser.get()

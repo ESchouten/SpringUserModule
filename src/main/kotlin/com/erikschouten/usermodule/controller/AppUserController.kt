@@ -5,6 +5,7 @@ import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.customclasses.exceptions.NotFoundException
 import com.erikschouten.usermodule.controller.dto.`in`.*
 import com.erikschouten.usermodule.controller.dto.out.AppUserDTO
+import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.service.AppUserService
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.http.HttpStatus
@@ -16,8 +17,8 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/user")
-class AppUserController(private val appUserService: AppUserService,
-                        private val appUserUtil: AppUserUtil) {
+class AppUserController(private val appUserService: AppUserService<AppUser>,
+                        private val appUserUtil: AppUserUtil<AppUser>) {
 
     @GetMapping("/{id}")
     fun get(@PathVariable id: UUID): ResponseEntity<AppUserDTO> {

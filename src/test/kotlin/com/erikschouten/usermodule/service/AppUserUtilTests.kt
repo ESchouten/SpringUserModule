@@ -2,6 +2,7 @@ package com.erikschouten.usermodule.service
 
 import com.erikschouten.customclasses.exceptions.NotFoundException
 import com.erikschouten.usermodule.AppUserBuilder
+import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockito_kotlin.mock
@@ -14,7 +15,7 @@ import java.util.*
 
 class AppUserUtilTests {
 
-    private val appUserRepository = mock<AppUserRepository>()
+    private val appUserRepository = mock<AppUserRepository<AppUser>>()
     private val appUserUtil = AppUserUtil(appUserRepository)
 
     @Test

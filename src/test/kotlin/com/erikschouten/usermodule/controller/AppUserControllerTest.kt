@@ -5,6 +5,7 @@ import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.customclasses.exceptions.NotFoundException
 import com.erikschouten.usermodule.AppUserBuilder
 import com.erikschouten.usermodule.controller.dto.`in`.*
+import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.service.AppUserService
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockito_kotlin.any
@@ -17,8 +18,8 @@ import java.util.*
 
 class AppUserControllerTest {
 
-    private val appUserService = mock<AppUserService>()
-    private val appUserUtil = mock<AppUserUtil>()
+    private val appUserService = mock<AppUserService<AppUser>>()
+    private val appUserUtil = mock<AppUserUtil<AppUser>>()
     private val appUserController = AppUserController(appUserService, appUserUtil)
 
     @Test

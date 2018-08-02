@@ -2,18 +2,21 @@ package com.erikschouten.usermodule.service
 
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
-import com.erikschouten.usermodule.model.AppUser
+import com.erikschouten.usermodule.model.AbstractAppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
+import kotlin.reflect.KClass
+import kotlin.reflect.full.primaryConstructor
 
 @Service
-class AppUserService(private val appUserRepository: AppUserRepository,
-                     private val appUserUtil: AppUserUtil,
-                     private val encoder: PasswordEncoder) {
+class AppUserService<T: AbstractAppUser>(private val appUserRepository: AppUserRepository<T>,
+                                         private val appUserUtil: AppUserUtil<T>,
+                                         private val encoder: PasswordEncoder,
+                                         private val clss: KClass<T>) {
 
     /**
      * User functionality
@@ -33,10 +36,11 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     fun create(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean = false) =
             this.doCreate(email, password, roles, locked)
 
-    private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): AppUser {
+    private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): T {
         if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
 
-        val appUser = AppUser(email = email, password = encoder.encode(password), authorities = roles, locked = locked)
+        val appUser = clss.primaryConstructor!!.call(UUID.randomUUID(), email, encoder.encode(password),roles, locked)
+
         return appUserRepository.save(appUser)
     }
 
@@ -56,7 +60,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      */
     fun update(id: UUID, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
-    private fun doUpdate(appUser: AppUser, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
+    private fun doUpdate(appUser: T, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): T {
         if (appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
         appUser.email = email
         if (locked != null) appUser.locked = locked
@@ -88,7 +92,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
         this.doChangePassword(appUser, newPassword)
     }
 
-    private fun doChangePassword(appUser: AppUser, newPassword: String) {
+    private fun doChangePassword(appUser: T, newPassword: String) {
         appUser.password = encoder.encode(newPassword)
         appUserRepository.save(appUser)
     }

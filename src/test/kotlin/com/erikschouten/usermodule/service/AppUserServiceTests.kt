@@ -3,6 +3,7 @@ package com.erikschouten.usermodule.service
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.usermodule.AppUserBuilder
+import com.erikschouten.usermodule.model.AbstractAppUser
 import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
@@ -18,10 +19,10 @@ import java.util.*
 
 class AppUserServiceTests {
 
-    private val appUserRepository = mock<AppUserRepository>()
-    private val appUserUtil = mock<AppUserUtil>()
+    private val appUserRepository = mock<AppUserRepository<AppUser>>()
+    private val appUserUtil = mock<AppUserUtil<AppUser>>()
     private val passwordEncoder = mock<PasswordEncoder>()
-    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder)
+    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder, AppUser::class)
 
     @Test
     fun validAppUserCreation() {
