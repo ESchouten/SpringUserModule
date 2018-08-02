@@ -8,7 +8,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-open class AppUser(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
+class AppUser(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
                    val id: UUID = UUID.randomUUID(),
                    @Column(unique = true, nullable = false)
                    var email: String,
