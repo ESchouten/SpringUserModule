@@ -2,20 +2,18 @@ package com.erikschouten.usermodule.service
 
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
-import com.erikschouten.usermodule.model.AbstractAppUser
+import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
-import kotlin.reflect.KClass
-import kotlin.reflect.full.primaryConstructor
 
 @Service
-class AppUserService<T: AbstractAppUser>(private val appUserRepository: AppUserRepository<T>,
-                                         private val appUserUtil: AppUserUtil<T>,
-                                         private val encoder: PasswordEncoder) {
+class AppUserService<T: AppUser>(private val appUserRepository: AppUserRepository<T>,
+                                 private val appUserUtil: AppUserUtil<T>,
+                                 private val encoder: PasswordEncoder) {
 
     /**
      * User functionality

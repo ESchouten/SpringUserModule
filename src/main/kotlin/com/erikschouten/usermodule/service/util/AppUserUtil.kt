@@ -1,7 +1,7 @@
 package com.erikschouten.usermodule.service.util
 
 import com.erikschouten.customclasses.exceptions.NotFoundException
-import com.erikschouten.usermodule.model.AbstractAppUser
+import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class AppUserUtil<T: AbstractAppUser>(private val appUserRepository: AppUserRepository<T>) : UserDetailsService {
+class AppUserUtil<T: AppUser>(private val appUserRepository: AppUserRepository<T>) : UserDetailsService {
 
     /**
      * User functionality
