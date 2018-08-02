@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 import javax.persistence.*
 
+@Entity
 abstract class AbstractAppUser(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
                                val id: UUID = UUID.randomUUID(),
                                @Column(unique = true, nullable = false)
