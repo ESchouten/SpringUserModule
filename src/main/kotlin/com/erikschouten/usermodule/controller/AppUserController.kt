@@ -24,7 +24,7 @@ class AppUserController<T : AppUser>(private val appUserService: AppUserService<
                                      private val appUserUtil: AppUserUtil<T>) {
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): ResponseEntity<AppUserDTO> {
+    fun get(@PathVariable id: UUID): ResponseEntity<Any> {
         return try {
             ResponseEntity.status(HttpStatus.OK).body(AppUserDTO(appUserUtil.get(id)))
         } catch (e: NotFoundException) {
