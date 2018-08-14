@@ -54,7 +54,7 @@ class AppUserController(private val appUserService: AppUserService,
     @PutMapping("/{id}")
     fun update(@PathVariable id: UUID, @RequestBody @Valid updateAppUserDTO: UpdateAppUserDTO): ResponseEntity<Void> {
         return try {
-            appUserService.update(id, updateAppUserDTO.email, updateAppUserDTO.authorities.map { SimpleGrantedAuthority(it.toString()) }.toSet(), updateAppUserDTO.locked)
+            appUserService.update(id, updateAppUserDTO.email, updateAppUserDTO.authorities.map { SimpleGrantedAuthority(it) }.toSet(), updateAppUserDTO.locked)
             ResponseEntity.status(HttpStatus.ACCEPTED).build()
         } catch (ex: AlreadyExistsException) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()
