@@ -2,7 +2,7 @@ package com.erikschouten.usermodule.controller.dto.out
 
 import com.erikschouten.usermodule.model.AppUser
 import java.util.*
-import javax.validation.constraints.Email
+import com.erikschouten.customclasses.validators.Email
 
 data class AppUserDTO(val id: UUID,
                       @field:[Email] val email: String,

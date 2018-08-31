@@ -24,7 +24,7 @@ class AppUserDTOConstraintsTests {
         var violations = validator.validate(RegisterAppUserDTO("registerAppUserTest@headon.nl", "PAss11@@"))
         assert(violations.isEmpty())
         //Invalid email
-        violations = validator.validate(RegisterAppUserDTO("registerAppUserTest@", "PAss11@@"))
+        violations = validator.validate(RegisterAppUserDTO("registerAppUserTest", "PAss11@@"))
         assert(violations.size == 1)
         //Invalid password
         violations = validator.validate(RegisterAppUserDTO("registerAppUserTest@headon.nl", "PAss11asdas"))
@@ -37,7 +37,7 @@ class AppUserDTOConstraintsTests {
         var violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11@@", listOf("ROLE_USERS"), false))
         assert(violations.isEmpty())
         //Invalid email
-        violations = validator.validate(CreateAppUserDTO("createAppUserTest@", "PAss11@@", listOf("ROLE_USERS"), false))
+        violations = validator.validate(CreateAppUserDTO("createAppUserTest", "PAss11@@", listOf("ROLE_USERS"), false))
         assert(violations.size == 1)
         //Invalid password
         violations = validator.validate(CreateAppUserDTO("createAppUserTest@headon.nl", "PAss11asdfm", listOf("ROLE_USERS"), false))
@@ -50,7 +50,7 @@ class AppUserDTOConstraintsTests {
         var violations = validator.validate(Email("emailTest@headon.nl"))
         assert(violations.isEmpty())
         //Invalid
-        violations = validator.validate(Email("emailTest@"))
+        violations = validator.validate(Email("emailTest"))
         assert(violations.size == 1)
     }
 
@@ -70,7 +70,7 @@ class AppUserDTOConstraintsTests {
         var violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@headon.nl", listOf("ROLE_USERS"), false))
         assert(violations.isEmpty())
         //Invalid email
-        violations = validator.validate(UpdateAppUserDTO("updateAppUserTest@", listOf("ROLE_USERS"), false))
+        violations = validator.validate(UpdateAppUserDTO("updateAppUserTest", listOf("ROLE_USERS"), false))
         assert(violations.size == 1)
     }
 
