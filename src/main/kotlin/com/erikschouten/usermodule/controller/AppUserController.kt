@@ -40,9 +40,9 @@ class AppUserController(private val appUserService: AppUserService,
     }
 
     @PutMapping
-    fun update(@RequestBody @Valid email: Email): ResponseEntity<Void> {
+    fun update(@RequestBody @Valid emailDTO: EmailDTO): ResponseEntity<Void> {
         return try {
-            appUserService.update(email.value)
+            appUserService.update(emailDTO.email)
             ResponseEntity.status(HttpStatus.ACCEPTED).build()
         } catch (ex: AlreadyExistsException) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()
@@ -76,9 +76,9 @@ class AppUserController(private val appUserService: AppUserService,
     }
 
     @PutMapping("/{id}/password")
-    fun changePassword(@PathVariable id: UUID, @RequestBody @Valid password: Password): ResponseEntity<Void> {
+    fun changePassword(@PathVariable id: UUID, @RequestBody @Valid passwordDTO: PasswordDTO): ResponseEntity<Void> {
         return try {
-            appUserService.changePassword(id, password.value)
+            appUserService.changePassword(id, passwordDTO.email)
             ResponseEntity.status(HttpStatus.ACCEPTED).build()
         } catch (ex: NotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()

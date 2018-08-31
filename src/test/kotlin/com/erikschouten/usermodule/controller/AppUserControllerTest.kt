@@ -30,11 +30,11 @@ class AppUserControllerTest {
 
     @Test
     fun updateTest() {
-        assert(appUserController.update(Email("updateTest@headon.nl")).statusCode == HttpStatus.ACCEPTED)
+        assert(appUserController.update(EmailDTO("updateTest@headon.nl")).statusCode == HttpStatus.ACCEPTED)
         whenever(appUserService.update(any())).doThrow(AlreadyExistsException::class)
-        assert(appUserController.update(Email("updateTest@headon.nl")).statusCode == HttpStatus.CONFLICT)
+        assert(appUserController.update(EmailDTO("updateTest@headon.nl")).statusCode == HttpStatus.CONFLICT)
         whenever(appUserService.update(any())).doThrow(NotFoundException::class)
-        assert(appUserController.update(Email("updateTest@headon.nl")).statusCode == HttpStatus.NOT_FOUND)
+        assert(appUserController.update(EmailDTO("updateTest@headon.nl")).statusCode == HttpStatus.NOT_FOUND)
     }
 
     @Test
@@ -57,9 +57,9 @@ class AppUserControllerTest {
 
     @Test
     fun changePasswordAdminTest() {
-        assert(appUserController.changePassword(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), Password("PAss11@@")).statusCode == HttpStatus.ACCEPTED)
+        assert(appUserController.changePassword(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), PasswordDTO("PAss11@@")).statusCode == HttpStatus.ACCEPTED)
         whenever(appUserService.changePassword(any<UUID>(), any())).doThrow(NotFoundException::class)
-        assert(appUserController.changePassword(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), Password("PAss11@@")).statusCode == HttpStatus.NOT_FOUND)
+        assert(appUserController.changePassword(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), PasswordDTO("PAss11@@")).statusCode == HttpStatus.NOT_FOUND)
     }
 
     @Test

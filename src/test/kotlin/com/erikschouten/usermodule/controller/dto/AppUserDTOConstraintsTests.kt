@@ -47,20 +47,20 @@ class AppUserDTOConstraintsTests {
     @Test
     fun email() {
         //Valid
-        var violations = validator.validate(Email("emailTest@headon.nl"))
+        var violations = validator.validate(EmailDTO("emailTest@headon.nl"))
         assert(violations.isEmpty())
         //Invalid
-        violations = validator.validate(Email("emailTest"))
+        violations = validator.validate(EmailDTO("emailTest"))
         assert(violations.size == 1)
     }
 
     @Test
     fun password() {
         //Valid
-        var violations = validator.validate(Password("PAss11@@"))
+        var violations = validator.validate(PasswordDTO("PAss11@@"))
         assert(violations.isEmpty())
         //Invalid
-        violations = validator.validate(Password("PAss11acmadjkls"))
+        violations = validator.validate(PasswordDTO("PAss11acmadjkls"))
         assert(violations.size == 1)
     }
 
