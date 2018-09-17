@@ -78,7 +78,7 @@ class AppUserController(private val appUserService: AppUserService,
     @PutMapping("/{id}/password")
     fun changePassword(@PathVariable id: UUID, @RequestBody @Valid passwordDTO: PasswordDTO): ResponseEntity<Void> {
         return try {
-            appUserService.changePassword(id, passwordDTO.email)
+            appUserService.changePassword(id, passwordDTO.password)
             ResponseEntity.status(HttpStatus.ACCEPTED).build()
         } catch (ex: NotFoundException) {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
