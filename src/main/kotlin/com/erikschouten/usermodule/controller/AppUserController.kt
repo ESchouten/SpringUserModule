@@ -85,7 +85,7 @@ class AppUserController(private val appUserService: AppUserService,
         }
     }
 
-    @GetMapping()
+    @GetMapping
     fun getAll(): List<AppUserDTO> = appUserService.getAll().map { AppUserDTO(it) }
 
 }
