@@ -15,7 +15,7 @@ import java.util.*
 import javax.validation.Valid
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 class AppUserController(private val appUserService: AppUserService,
                         private val appUserUtil: AppUserUtil) {
 
@@ -85,7 +85,7 @@ class AppUserController(private val appUserService: AppUserService,
         }
     }
 
-    @GetMapping("/all")
+    @GetMapping
     fun getAll(): List<AppUserDTO> = appUserService.getAll().map { AppUserDTO(it) }
 
 }
