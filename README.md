@@ -1,5 +1,5 @@
-# UserModule
-Spring module for user management.
+# Schouten Security
+Spring module for secure user management.
 
 ## Dependency
 **Maven:**
