@@ -10,5 +10,5 @@ data class AppUserBuilder(val id: UUID = UUID.fromString("befa7c20-20ae-42dd-ad1
                           val roles: Set<SimpleGrantedAuthority> = emptySet(),
                           val locked: Boolean = false) {
 
-    fun build() = AppUser(id, email, password, roles, locked)
+    fun build() = AppUser(id, email, password, roles)
 }

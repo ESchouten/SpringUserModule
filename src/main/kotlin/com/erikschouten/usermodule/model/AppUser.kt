@@ -19,7 +19,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
               @Column(nullable = false)
               var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
-    constructor(email: String, password: String, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet(), locked)
+    constructor(id: UUID = UUID.randomUUID(), email: String, password: String, authorities: Set<SimpleGrantedAuthority>) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet())
 
     override fun eraseCredentials() {
         password = ""
