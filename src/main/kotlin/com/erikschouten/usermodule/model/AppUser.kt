@@ -8,22 +8,18 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-class AppUser(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
+class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
               val id: UUID = UUID.randomUUID(),
               @Column(unique = true, nullable = false)
               var email: String,
               @Column(nullable = false)
               private var password: String,
-              authorities: Set<SimpleGrantedAuthority>,
+              @ElementCollection(fetch = FetchType.EAGER)
+              private var authorities: Set<String>,
               @Column(nullable = false)
               var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    private var authorities: Set<String>
-
-    init {
-        this.authorities = authorities.map { it.authority }.toSet()
-    }
+    constructor(email: String, password: String, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet(), locked)
 
     override fun eraseCredentials() {
         password = ""
