@@ -59,6 +59,8 @@ class AppUserDTOConstraintsTests {
         //Valid
         var violations = validator.validate(PasswordDTO("PAss11@@"))
         assert(violations.isEmpty())
+        violations = validator.validate(PasswordDTO("V@nl1th#"))
+        assert(violations.size == 0)
         //Invalid
         violations = validator.validate(PasswordDTO("PAss11acmadjkls"))
         assert(violations.size == 1)

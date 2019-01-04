@@ -32,7 +32,7 @@ class AppUserController(private val appUserService: AppUserService,
     fun create(@RequestBody @Valid createAppUserDTO: CreateAppUserDTO): ResponseEntity<Void> {
         return try {
             appUserService.create(createAppUserDTO.email, createAppUserDTO.password,
-                    createAppUserDTO.authorities.map { SimpleGrantedAuthority(it.toString()) }.toSet(), createAppUserDTO.locked)
+                    createAppUserDTO.authorities.map { SimpleGrantedAuthority(it) }.toSet(), createAppUserDTO.locked)
             ResponseEntity.status(HttpStatus.CREATED).build()
         } catch (ex: AlreadyExistsException) {
             ResponseEntity.status(HttpStatus.CONFLICT).build()

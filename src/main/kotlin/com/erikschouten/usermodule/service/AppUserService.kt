@@ -60,7 +60,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
         if (appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
         appUser.email = email
         if (locked != null) appUser.locked = locked
-        if (roles != null) appUser.authorities = roles
+        if (roles != null) appUser.setAuthorities(roles)
         return appUserRepository.save(appUser)
     }
 
