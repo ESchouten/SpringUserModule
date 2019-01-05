@@ -9,15 +9,15 @@ import javax.persistence.*
 
 @Entity
 class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
-              val id: UUID = UUID.randomUUID(),
-              @Column(unique = true, nullable = false)
-              var email: String,
-              @Column(nullable = false)
-              private var password: String,
-              @ElementCollection(fetch = FetchType.EAGER)
-              private var authorities: Set<String>,
-              @Column(nullable = false)
-              var locked: Boolean = false) : UserDetails, CredentialsContainer {
+                                  val id: UUID = UUID.randomUUID(),
+                                  @Column(unique = true, nullable = false)
+                                  var email: String,
+                                  @Column(nullable = false)
+                                  private var password: String,
+                                  @ElementCollection(fetch = FetchType.EAGER)
+                                  private var roles: Set<String>,
+                                  @Column(nullable = false)
+                                  var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
     constructor(id: UUID = UUID.randomUUID(), email: String, password: String, authorities: Set<SimpleGrantedAuthority>) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet())
 
@@ -26,11 +26,11 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
     }
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return authorities.map { SimpleGrantedAuthority(it) }.toMutableList()
+        return roles.map { SimpleGrantedAuthority(it) }.toMutableList()
     }
 
     fun setAuthorities(authorities: Set<SimpleGrantedAuthority>) {
-        this.authorities = authorities.map { it.authority }.toSet()
+        this.roles = authorities.map { it.authority }.toSet()
     }
 
     override fun isEnabled(): Boolean {
@@ -71,7 +71,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
         if (email != other.email) return false
         if (password != other.password) return false
         if (locked != other.locked) return false
-        if (authorities != other.authorities) return false
+        if (roles != other.roles) return false
 
         return true
     }
@@ -81,7 +81,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
         result = 31 * result + email.hashCode()
         result = 31 * result + password.hashCode()
         result = 31 * result + locked.hashCode()
-        result = 31 * result + authorities.hashCode()
+        result = 31 * result + roles.hashCode()
         return result
     }
 }
