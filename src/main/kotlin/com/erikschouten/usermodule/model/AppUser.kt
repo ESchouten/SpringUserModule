@@ -15,11 +15,11 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
                                   @Column(nullable = false)
                                   private var password: String,
                                   @ElementCollection(fetch = FetchType.EAGER)
-                                  var roles: List<String>,
+                                  var roles: Set<String>,
                                   @Column(nullable = false)
                                   var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
-    constructor(id: UUID = UUID.randomUUID(), email: String, password: String, authorities: Set<SimpleGrantedAuthority>, locked: Boolean) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }, locked)
+    constructor(id: UUID = UUID.randomUUID(), email: String, password: String, authorities: Set<SimpleGrantedAuthority>) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet())
 
     override fun eraseCredentials() {
         password = ""
@@ -30,7 +30,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
     }
 
     fun setAuthorities(authorities: Set<SimpleGrantedAuthority>) {
-        this.roles = authorities.map { it.authority }
+        this.roles = authorities.map { it.authority }.toSet()
     }
 
     override fun isEnabled(): Boolean {
