@@ -15,7 +15,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
                                   @Column(nullable = false)
                                   private var password: String,
                                   @ElementCollection(fetch = FetchType.EAGER)
-                                  private var roles: List<String>,
+                                  var roles: List<String>,
                                   @Column(nullable = false)
                                   var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
