@@ -36,8 +36,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): AppUser {
         if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
 
-        val appUser = AppUser(email = email, password = encoder.encode(password), authorities = roles)
-        if (locked) appUser.locked = locked
+        val appUser = AppUser(email = email, password = encoder.encode(password), authorities = roles, locked = locked)
         return appUserRepository.save(appUser)
     }
 
