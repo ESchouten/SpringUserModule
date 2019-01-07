@@ -15,7 +15,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
                                   @Column(nullable = false)
                                   private var password: String,
                                   @ElementCollection(fetch = FetchType.EAGER)
-                                  private var roles: Set<String>,
+                                  private var roles: List<String>,
                                   @Column(nullable = false)
                                   var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
@@ -30,7 +30,7 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
     }
 
     fun setAuthorities(authorities: Set<SimpleGrantedAuthority>) {
-        this.roles = authorities.map { it.authority }.toSet()
+        this.roles = authorities.map { it.authority }
     }
 
     override fun isEnabled(): Boolean {
