@@ -1,7 +1,9 @@
-# Schouten Security
+# Spring User Module
 Spring module for secure user management.
 
 ## Dependency
+[![](https://jitpack.io/v/ESchouten/springusermodule.svg)](https://jitpack.io/#ESchouten/springusermodule)
+
 **Maven:**
 
 Add the following dependency:
@@ -16,7 +18,7 @@ Add the following dependency:
 <dependency>
     <groupId>com.github.ESchouten</groupId>
     <artifactId>SpringUserModule</artifactId>
-    <version>0.2.2</version>
+    <version>${springusermodule.version}</version>
 </dependency>
 ```
 **Gradle:**
@@ -26,7 +28,7 @@ repositories {
 }
 
 dependencies {
-	implementation 'com.github.ESchouten:SpringUserModule:0.2.2'
+	implementation 'com.github.ESchouten:SpringUserModule:$springusermodule.version'
 }
 ```
 ## Implementation
