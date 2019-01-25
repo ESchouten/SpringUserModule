@@ -1,9 +1,9 @@
 # Spring User Module
+[![](https://jitpack.io/v/ESchouten/springusermodule.svg)](https://jitpack.io/#ESchouten/springusermodule)
+
 Spring module for secure user management.
 
 ## Dependency
-[![](https://jitpack.io/v/ESchouten/springusermodule.svg)](https://jitpack.io/#ESchouten/springusermodule)
-
 **Maven:**
 
 Add the following dependency:
