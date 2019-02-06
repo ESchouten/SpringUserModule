@@ -36,9 +36,9 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): AppUser {
         if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
 
-        val appUser = AppUser(email = email, password = encoder.encode(password), authorities = roles)
-        if (locked) appUser.locked = locked
-        return appUserRepository.save(appUser)
+        return appUserRepository.save(
+                AppUser(email = email, password = password, encoder = encoder, authorities = roles, locked = locked)
+        )
     }
 
     /**
@@ -57,12 +57,16 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      */
     fun update(id: UUID, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
-    private fun doUpdate(appUser: AppUser, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
-        if (appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
-        appUser.email = email
-        if (locked != null) appUser.locked = locked
-        if (roles != null) appUser.setAuthorities(roles)
-        return appUserRepository.save(appUser)
+    private fun doUpdate(appUser: AppUser, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
+        if (!email.isNullOrBlank() && appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
+
+        return appUserRepository.save(
+                appUser.apply {
+                    if (!email.isNullOrBlank()) this.email = email
+                    if (locked != null) this.locked = locked
+                    if (roles != null) this.setAuthorities(roles)
+                }
+        )
     }
 
     /**
@@ -90,8 +94,9 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     }
 
     private fun doChangePassword(appUser: AppUser, newPassword: String) {
-        appUser.password = encoder.encode(newPassword)
-        appUserRepository.save(appUser)
+        appUserRepository.save(
+                appUser.apply { setPassword(newPassword, encoder) }
+        )
     }
 
     /**

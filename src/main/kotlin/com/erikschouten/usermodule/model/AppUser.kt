@@ -1,9 +1,9 @@
 package com.erikschouten.usermodule.model
 
 import org.springframework.security.core.CredentialsContainer
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
+import org.springframework.security.crypto.password.PasswordEncoder
 import java.util.*
 import javax.persistence.*
 
@@ -19,47 +19,33 @@ class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition =
                                   @Column(nullable = false)
                                   var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
-    constructor(id: UUID = UUID.randomUUID(), email: String, password: String, authorities: Set<SimpleGrantedAuthority>) : this(UUID.randomUUID(), email, password, authorities.map { it.authority }.toSet())
+    constructor(id: UUID = UUID.randomUUID(), email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, encoder.encode(password), authorities.map { it.authority }.toSet(), locked)
 
     override fun eraseCredentials() {
         password = ""
     }
 
-    override fun getAuthorities(): MutableCollection<out GrantedAuthority> {
-        return roles.map { SimpleGrantedAuthority(it) }.toMutableList()
+    override fun getPassword() = password
+
+    fun setPassword(password: String, encoder: PasswordEncoder) {
+        this.password = encoder.encode(password)
     }
+
+    override fun getAuthorities() = roles.map { SimpleGrantedAuthority(it) }.toMutableList()
 
     fun setAuthorities(authorities: Set<SimpleGrantedAuthority>) {
         this.roles = authorities.map { it.authority }.toSet()
     }
 
-    override fun isEnabled(): Boolean {
-        return true
-    }
+    override fun getUsername() = email
 
-    override fun getUsername(): String {
-        return email
-    }
+    override fun isAccountNonLocked() = !locked
 
-    override fun isCredentialsNonExpired(): Boolean {
-        return true
-    }
+    override fun isEnabled() = true
 
-    override fun getPassword(): String {
-        return password
-    }
+    override fun isCredentialsNonExpired() = true
 
-    fun setPassword(password: String) {
-        this.password = password
-    }
-
-    override fun isAccountNonExpired(): Boolean {
-        return true
-    }
-
-    override fun isAccountNonLocked(): Boolean {
-        return !locked
-    }
+    override fun isAccountNonExpired() = true
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

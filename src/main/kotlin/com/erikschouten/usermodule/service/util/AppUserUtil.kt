@@ -23,23 +23,14 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
 
     fun emailInUse(email: String) = appUserRepository.findByEmail(email).isPresent
 
-    fun get(email: String): AppUser {
-        val optionalAppUser = appUserRepository.findByEmail(email)
-        if (!optionalAppUser.isPresent) throw NotFoundException("User not found")
-        return optionalAppUser.get()
-    }
+    fun get(email: String): AppUser = appUserRepository.findByEmail(email).orElseThrow { NotFoundException("User not found") }
 
-    fun get(id: UUID): AppUser {
-        val optionalAppUser = appUserRepository.findById(id)
-        if (!optionalAppUser.isPresent) throw NotFoundException("User not found")
-        return optionalAppUser.get()
-    }
+    fun get(id: UUID): AppUser = appUserRepository.findById(id).orElseThrow { NotFoundException("User not found") }
 
-    override fun loadUserByUsername(email: String): UserDetails {
-        try {
-            return get(email)
-        } catch (ex: NotFoundException) {
-            throw UsernameNotFoundException("User not found")
-        }
-    }
+    override fun loadUserByUsername(email: String): UserDetails =
+            try {
+                get(email)
+            } catch (ex: NotFoundException) {
+                throw UsernameNotFoundException("User not found")
+            }
 }
