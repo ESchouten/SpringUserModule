@@ -6,14 +6,14 @@
 
     <groupId>com.erikschouten</groupId>
     <artifactId>UserModule</artifactId>
-    <version>0.2.3</version>
+    <version>0.2.4</version>
 
     <!--mvn versions:display-property-updates-->
     <!--mvn versions:update-properties-->
     <!--To extract versions to properties: opt + cmd + V-->
     <properties>
         <kotlin.version>1.3.20</kotlin.version>
-        <customclasses.version>0.1.8</customclasses.version>
+        <customclasses.version>0.1.9</customclasses.version>
 
         <spring-web.version>5.1.4.RELEASE</spring-web.version>
         <spring-security.version>5.1.3.RELEASE</spring-security.version>
