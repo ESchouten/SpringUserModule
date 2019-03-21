@@ -1,4 +1,4 @@
-package com.erikschouten.usermodule.model
+package com.erikschouten.usermodule.validator
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.stereotype.Component

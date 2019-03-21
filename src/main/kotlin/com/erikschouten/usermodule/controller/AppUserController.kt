@@ -35,6 +35,8 @@ class AppUserController(private val appUserService: AppUserService,
                 ResponseEntity.status(HttpStatus.CREATED).build()
             } catch (ex: AlreadyExistsException) {
                 ResponseEntity.status(HttpStatus.CONFLICT).build()
+            } catch (ex: InvalidParameterException) {
+                ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).build()
             }
 
     @PutMapping
@@ -57,6 +59,8 @@ class AppUserController(private val appUserService: AppUserService,
                 ResponseEntity.status(HttpStatus.CONFLICT).build()
             } catch (ex: NotFoundException) {
                 ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            } catch (ex: InvalidParameterException) {
+                ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).build()
             }
 
     @PutMapping("/password")
