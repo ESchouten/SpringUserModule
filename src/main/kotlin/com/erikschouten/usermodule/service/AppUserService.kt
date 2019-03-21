@@ -3,6 +3,7 @@ package com.erikschouten.usermodule.service
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.usermodule.model.AppUser
+import com.erikschouten.usermodule.model.RoleValidator
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.security.core.authority.SimpleGrantedAuthority
@@ -13,7 +14,8 @@ import java.util.*
 @Service
 class AppUserService(private val appUserRepository: AppUserRepository,
                      private val appUserUtil: AppUserUtil,
-                     private val encoder: PasswordEncoder) {
+                     private val encoder: PasswordEncoder,
+                     private val roleValidator: RoleValidator) {
 
     /**
      * User functionality
@@ -35,6 +37,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
 
     private fun doCreate(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean): AppUser {
         if (appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
+        if (!roleValidator.validate(roles)) throw InvalidParameterException("Role not allowed")
 
         return appUserRepository.save(
                 AppUser(email = email, password = password, encoder = encoder, authorities = roles, locked = locked)
@@ -59,6 +62,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
 
     private fun doUpdate(appUser: AppUser, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
         if (!email.isNullOrBlank() && appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
+        if (roles != null && !roleValidator.validate(roles)) throw InvalidParameterException("Role not allowed")
 
         return appUserRepository.save(
                 appUser.apply {

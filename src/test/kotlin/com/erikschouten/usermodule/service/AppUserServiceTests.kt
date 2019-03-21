@@ -4,6 +4,7 @@ import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.usermodule.AppUserBuilder
 import com.erikschouten.usermodule.model.AppUser
+import com.erikschouten.usermodule.model.RoleValidator
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockitokotlin2.any
@@ -21,7 +22,8 @@ class AppUserServiceTests {
     private val appUserRepository = mock<AppUserRepository>()
     private val appUserUtil = mock<AppUserUtil>()
     private val passwordEncoder = mock<PasswordEncoder>()
-    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder)
+    private val roleValidator = mock<RoleValidator>()
+    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder, roleValidator)
 
     @Test
     fun validAppUserCreation() {
