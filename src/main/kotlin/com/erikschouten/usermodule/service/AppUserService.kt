@@ -103,6 +103,10 @@ class AppUserService(private val appUserRepository: AppUserRepository,
         )
     }
 
+    fun delete(id: UUID) {
+        appUserRepository.deleteById(id)
+    }
+
     /**
      * Admin functionality
      * Returns list of all accounts
