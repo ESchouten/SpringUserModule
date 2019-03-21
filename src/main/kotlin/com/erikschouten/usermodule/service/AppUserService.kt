@@ -58,7 +58,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account management
      */
-    fun update(id: UUID, email: String, roles: Set<SimpleGrantedAuthority>?, locked: Boolean) = doUpdate(appUserUtil.get(id), email, roles, locked)
+    fun update(id: UUID, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
     private fun doUpdate(appUser: AppUser, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
         if (!email.isNullOrBlank() && appUser.email != email && appUserUtil.emailInUse(email)) throw AlreadyExistsException("Email already in use")
