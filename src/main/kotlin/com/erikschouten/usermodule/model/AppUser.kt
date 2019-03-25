@@ -1,5 +1,6 @@
 package com.erikschouten.usermodule.model
 
+import com.fasterxml.jackson.annotation.JsonIgnoreType
 import org.springframework.security.core.CredentialsContainer
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
@@ -8,6 +9,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
+@JsonIgnoreType
 class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
                                   val id: UUID = UUID.randomUUID(),
                                   @Column(unique = true, nullable = false)
