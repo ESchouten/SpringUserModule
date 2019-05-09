@@ -10,7 +10,7 @@ import javax.persistence.*
 
 @Entity
 @JsonIgnoreType
-class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
+open class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
                                   val id: UUID = UUID.randomUUID(),
                                   @Column(unique = true, nullable = false)
                                   var email: String,
