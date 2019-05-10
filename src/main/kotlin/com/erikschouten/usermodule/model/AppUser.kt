@@ -13,13 +13,13 @@ import javax.persistence.*
 open class AppUser private constructor(@Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
                                   val id: UUID = UUID.randomUUID(),
                                   @Column(unique = true, nullable = false)
-                                  var email: String,
+                                  open var email: String,
                                   @Column(nullable = false)
                                   private var password: String,
                                   @ElementCollection(fetch = FetchType.EAGER)
-                                  var roles: Set<String>,
+                                  open var roles: Set<String>,
                                   @Column(nullable = false)
-                                  var locked: Boolean = false) : UserDetails, CredentialsContainer {
+                                  open var locked: Boolean = false) : UserDetails, CredentialsContainer {
 
     constructor(id: UUID = UUID.randomUUID(), email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, encoder.encode(password), authorities.map { it.authority }.toSet(), locked)
     constructor(email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, password, encoder, authorities, locked)
