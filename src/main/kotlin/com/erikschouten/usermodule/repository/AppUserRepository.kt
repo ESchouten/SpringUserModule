@@ -2,11 +2,14 @@ package com.erikschouten.usermodule.repository
 
 import com.erikschouten.usermodule.model.AppUser
 import org.springframework.data.repository.CrudRepository
+import org.springframework.data.repository.NoRepositoryBean
 import org.springframework.stereotype.Repository
 import java.util.*
 
-@Repository
-interface AppUserRepository : CrudRepository<AppUser, UUID> {
-
+@NoRepositoryBean
+interface IAppUserRepository<T : AppUser> : CrudRepository<T, UUID> {
     fun findByEmail(email: String): Optional<AppUser>
 }
+
+@Repository
+interface AppUserRepository : IAppUserRepository<AppUser>
