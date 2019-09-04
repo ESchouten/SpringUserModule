@@ -110,5 +110,5 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account management
      */
-    fun getAll() = appUserRepository.findAll()
+    fun getAll(locked: Boolean) = if (locked) appUserRepository.findAll() else appUserRepository.findAllByLockedTrue()
 }
