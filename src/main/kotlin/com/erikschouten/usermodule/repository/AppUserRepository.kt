@@ -9,7 +9,7 @@ import java.util.*
 @NoRepositoryBean
 interface IAppUserRepository<T : AppUser> : CrudRepository<T, UUID> {
     fun findByEmail(email: String): Optional<T>
-    fun findAllByLockedTrue(): List<AppUser>
+    fun findAllByLockedFalse(): List<AppUser>
 }
 
 @Repository
