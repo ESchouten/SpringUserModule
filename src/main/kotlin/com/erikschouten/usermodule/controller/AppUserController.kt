@@ -84,6 +84,6 @@ class AppUserController(private val appUserService: AppUserService,
             }
 
     @GetMapping
-    fun getAll(@RequestParam locked: Boolean = false): List<AppUserDTO> = appUserService.getAll(locked).map { AppUserDTO(it) }
+    fun getAll(@RequestParam all: Boolean = false): List<AppUserDTO> = appUserService.getAll(all).map { AppUserDTO(it) }
 
 }
