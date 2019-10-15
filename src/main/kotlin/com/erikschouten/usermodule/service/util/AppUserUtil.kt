@@ -23,8 +23,10 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
 
     fun emailInUse(email: String) = appUserRepository.findByEmail(email).isPresent
 
+    @Throws(FieldErrorException::class)
     fun get(email: String): AppUser = appUserRepository.findByEmail(email).orElseThrow { FieldErrorException(FieldErrors.NOT_FOUND, "user") }
 
+    @Throws(FieldErrorException::class)
     fun get(id: UUID): AppUser = appUserRepository.findById(id).orElseThrow { FieldErrorException(FieldErrors.NOT_FOUND, "user") }
 
     override fun loadUserByUsername(email: String): UserDetails = get(email)
