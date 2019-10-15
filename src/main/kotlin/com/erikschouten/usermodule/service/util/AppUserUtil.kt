@@ -21,10 +21,8 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
      */
     fun findCurrent() = get(SecurityContextHolder.getContext().authentication.name)
 
-    fun emailInUse(email: String): Boolean = appUserRepository.findByEmail(email).let {
-        if (it.isPresent) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "email")
-
-        return false
+    fun emailInUse(email: String) {
+        if (appUserRepository.findByEmail(email).isPresent) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "email")
     }
 
     @Throws(FieldErrorException::class)
