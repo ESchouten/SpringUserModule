@@ -144,7 +144,7 @@ class AppUserServiceTests {
     fun listAppUserDTO() {
         whenever(appUserRepository.findAll())
                 .thenReturn(listOf(AppUserBuilder().build(), AppUserBuilder(email = "test2@headon.nl").build()))
-        appUserService.getAll()
+        appUserService.getAll(true)
     }
 
     @Test
