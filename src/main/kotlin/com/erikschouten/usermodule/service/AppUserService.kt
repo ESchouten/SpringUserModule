@@ -38,7 +38,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
             this.create(AppUser(email = email, password = password, encoder = encoder, authorities = roles, locked = locked))
 
     fun create(appUser: AppUser): AppUser {
-        if (appUserUtil.emailInUse(appUser.email)) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "name")
+        appUserUtil.emailInUse(appUser.email)
 
         // todo: Not actually used. Check method
         if (!roleValidator.validate(appUser.authorities.toSet())) throw InvalidParameterException("Role not allowed")
@@ -63,7 +63,8 @@ class AppUserService(private val appUserRepository: AppUserRepository,
     fun update(id: UUID, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
     private fun doUpdate(appUser: AppUser, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
-        if (!email.isNullOrBlank() && appUser.email != email && appUserUtil.emailInUse(email)) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "name")
+        if (!email.isNullOrBlank() && appUser.email != email) appUserUtil.emailInUse(email)
+
         if (roles != null && !roleValidator.validate(roles)) throw InvalidParameterException("Role not allowed")
 
         return appUserRepository.save(
