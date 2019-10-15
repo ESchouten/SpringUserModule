@@ -24,7 +24,7 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
     fun emailInUse(email: String): Boolean = appUserRepository.findByEmail(email).let {
         if (it.isPresent) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "email")
 
-        return true
+        return false
     }
 
     @Throws(FieldErrorException::class)
