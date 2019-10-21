@@ -64,7 +64,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
         return appUserRepository.save(
                 appUser.apply {
                     if (!email.isNullOrBlank()) this.email = email
-                    if (locked != null) this.locked = locked
+                    if (locked != null) this.isLocked = locked
                     if (roles != null) this.setAuthorities(roles)
                 }
         )
@@ -110,5 +110,5 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account management
      */
-    fun getAll(all: Boolean) = if (all) appUserRepository.findAll() else appUserRepository.findAllByLockedFalse()
+    fun getAll(all: Boolean) = if (all) appUserRepository.findAll() else appUserRepository.findAllByIsLockedFalse()
 }
