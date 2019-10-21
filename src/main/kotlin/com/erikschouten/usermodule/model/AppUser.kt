@@ -16,7 +16,7 @@ open class AppUser(
         @Column(unique = true, nullable = false)
         open var email: String,
         @Column(nullable = false)
-        private var password: String,
+        private var userPassword: String,
         @ElementCollection(fetch = FetchType.EAGER)
         open var roles: Set<String>,
         @Column(nullable = false)
@@ -26,13 +26,13 @@ open class AppUser(
     constructor(email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, password, encoder, authorities, locked)
 
     override fun eraseCredentials() {
-        password = ""
+        userPassword = ""
     }
 
-    override fun getPassword() = password
+    override fun getPassword() = userPassword
 
     fun setPassword(password: String, encoder: PasswordEncoder) {
-        this.password = encoder.encode(password)
+        this.userPassword = encoder.encode(password)
     }
 
     override fun getAuthorities() = roles.map { SimpleGrantedAuthority(it) }.toMutableList()
@@ -59,7 +59,7 @@ open class AppUser(
 
         if (id != other.id) return false
         if (email != other.email) return false
-        if (password != other.password) return false
+        if (userPassword != other.userPassword) return false
         if (locked != other.locked) return false
         if (roles != other.roles) return false
 
@@ -69,7 +69,7 @@ open class AppUser(
     override fun hashCode(): Int {
         var result = id.hashCode()
         result = 31 * result + email.hashCode()
-        result = 31 * result + password.hashCode()
+        result = 31 * result + userPassword.hashCode()
         result = 31 * result + locked.hashCode()
         result = 31 * result + roles.hashCode()
         return result
