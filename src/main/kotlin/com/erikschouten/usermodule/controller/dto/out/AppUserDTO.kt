@@ -10,5 +10,5 @@ data class AppUserDTO(val id: UUID,
                       @field:[NoHtml] val authorities: List<String>,
                       val locked: Boolean) {
 
-    constructor(appUser: AppUser) : this(appUser.id, appUser.email, appUser.authorities.map { it.authority }, appUser.locked)
+    constructor(appUser: AppUser) : this(appUser.id, appUser.email, appUser.authorities.map { it.authority }, appUser.isLocked)
 }

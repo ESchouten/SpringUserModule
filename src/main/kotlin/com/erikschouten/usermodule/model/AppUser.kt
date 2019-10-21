@@ -20,7 +20,7 @@ open class AppUser(
         @ElementCollection(fetch = FetchType.EAGER)
         open var roles: Set<String>,
         @Column(nullable = false)
-        open var locked: Boolean = false) : UserDetails, CredentialsContainer {
+        open var isLocked: Boolean = false) : UserDetails, CredentialsContainer {
 
     constructor(id: UUID = UUID.randomUUID(), email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, encoder.encode(password), authorities.map { it.authority }.toSet(), locked)
     constructor(email: String, password: String, encoder: PasswordEncoder, authorities: Set<SimpleGrantedAuthority>, locked: Boolean = false) : this(UUID.randomUUID(), email, password, encoder, authorities, locked)
@@ -43,7 +43,7 @@ open class AppUser(
 
     override fun getUsername() = email
 
-    override fun isAccountNonLocked() = !locked
+    override fun isAccountNonLocked() = !isLocked
 
     override fun isEnabled() = true
 
@@ -60,7 +60,7 @@ open class AppUser(
         if (id != other.id) return false
         if (email != other.email) return false
         if (userPassword != other.userPassword) return false
-        if (locked != other.locked) return false
+        if (isLocked != other.isLocked) return false
         if (roles != other.roles) return false
 
         return true
@@ -70,7 +70,7 @@ open class AppUser(
         var result = id.hashCode()
         result = 31 * result + email.hashCode()
         result = 31 * result + userPassword.hashCode()
-        result = 31 * result + locked.hashCode()
+        result = 31 * result + isLocked.hashCode()
         result = 31 * result + roles.hashCode()
         return result
     }

@@ -64,7 +64,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
         return appUserRepository.save(
                 appUser.apply {
                     if (!email.isNullOrBlank()) this.email = email
-                    if (locked != null) this.locked = locked
+                    if (locked != null) this.isLocked = locked
                     if (roles != null) this.setAuthorities(roles)
                 }
         )
