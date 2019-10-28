@@ -6,7 +6,7 @@
 
     <groupId>com.erikschouten</groupId>
     <artifactId>UserModule</artifactId>
-    <version>0.2.12</version>
+    <version>0.3.0</version>
 
     <!--mvn versions:update-parent versions:update-properties-->
     <!--To extract versions to properties: opt + cmd + V-->
@@ -154,6 +154,14 @@
             </plugin>
         </plugins>
     </build>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub OWNER Apache Maven Packages</name>
+            <url>https://maven.pkg.github.com/ESchouten/SpringUserModule</url>
+        </repository>
+    </distributionManagement>
 
     <repositories>
         <repository>
