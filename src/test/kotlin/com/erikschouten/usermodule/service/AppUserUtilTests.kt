@@ -2,6 +2,7 @@ package com.erikschouten.usermodule.service
 
 import com.erikschouten.customclasses.exceptions.NotFoundException
 import com.erikschouten.usermodule.AppUserBuilder
+import com.erikschouten.usermodule.errorHandeling.FieldErrorException
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockitokotlin2.mock
@@ -29,13 +30,13 @@ class AppUserUtilTests {
     @Test
     fun emailInUse() {
         whenever(appUserRepository.findByEmail("emailInUse@headon.nl")).thenReturn(Optional.of(AppUserBuilder(email = "emailInUse@headon.nl").build()))
-        assert(appUserUtil.emailInUse("emailInUse@headon.nl"))
+        appUserUtil.emailInUse("emailInUse@headon.nl")
     }
 
-    @Test
+    @Test(expected = FieldErrorException::class)
     fun emailNotInUse() {
         whenever(appUserRepository.findByEmail("emailNotInUse@headon.nl")).thenReturn(Optional.empty())
-        assert(!appUserUtil.emailInUse("emailNotInUse@headon.nl"))
+        appUserUtil.emailInUse("emailNotInUse@headon.nl")
     }
 
     @Test

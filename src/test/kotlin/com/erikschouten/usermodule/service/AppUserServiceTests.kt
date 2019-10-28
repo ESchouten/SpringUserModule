@@ -3,11 +3,13 @@ package com.erikschouten.usermodule.service
 import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.usermodule.AppUserBuilder
+import com.erikschouten.usermodule.errorHandeling.FieldErrorException
 import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.validator.RoleValidator
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
@@ -35,20 +37,9 @@ class AppUserServiceTests {
         appUserService.create("validAppUserCreation@headon.nl", "p")
     }
 
-    @Test(expected = AlreadyExistsException::class)
-    fun appUserCreationWithExistingUsername() {
-        whenever(passwordEncoder.encode("p")).thenReturn("vErYsEcUrEpAsSwOrD")
-        whenever(appUserUtil.emailInUse("appUserCreationWithExistingUsername@headon.nl"))
-                .thenReturn(true)
-
-        appUserService.create("appUserCreationWithExistingUsername@headon.nl", "p")
-    }
-
     @Test
     fun appUserUpdate() {
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("appUserUpdate@headon.nl", "p")
-        whenever(appUserUtil.emailInUse("appUserUpdate@gmail.com"))
-                .thenReturn(false)
         whenever(appUserUtil.findCurrent()).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
         whenever(appUserRepository.save(any<AppUser>())).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
 
@@ -60,8 +51,7 @@ class AppUserServiceTests {
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("appUserUpdate@headon.nl", "p")
         whenever(appUserUtil.get("appUserUpdate@headon.nl"))
                 .thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
-        whenever(appUserUtil.emailInUse("appUserUpdate@gmail.com"))
-                .thenReturn(true)
+        whenever(appUserUtil.emailInUse("appUserUpdate@gmail.com")).doThrow(FieldErrorException::class)
         whenever(appUserUtil.findCurrent()).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
 
         appUserService.update("appUserUpdate@gmail.com")
@@ -84,17 +74,6 @@ class AppUserServiceTests {
         whenever(appUserRepository.save(any<AppUser>())).thenReturn(AppUserBuilder(email = "appUserUpdateAdmin@headon.nl").build())
 
         appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "appUserUpdateAdmin@headon.nl", emptySet(), true)
-    }
-
-    @Test(expected = AlreadyExistsException::class)
-    fun invalidAppUserUpdate() {
-        whenever(appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85")))
-                .thenReturn(AppUserBuilder(email = "invalidAppUserUpdate@headon.nl").build())
-
-        whenever(appUserUtil.emailInUse("invalidAppUserUpdate@gmail.com"))
-                .thenReturn(true)
-
-        appUserService.update(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), "invalidAppUserUpdate@gmail.com", setOf(SimpleGrantedAuthority("ROLE_USERS")), false)
     }
 
     @Test

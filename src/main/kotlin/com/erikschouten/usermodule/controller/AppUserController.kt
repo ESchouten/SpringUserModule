@@ -5,11 +5,13 @@ import com.erikschouten.customclasses.exceptions.InvalidParameterException
 import com.erikschouten.customclasses.exceptions.NotFoundException
 import com.erikschouten.usermodule.controller.dto.`in`.*
 import com.erikschouten.usermodule.controller.dto.out.AppUserDTO
+import com.erikschouten.usermodule.errorHandeling.FieldErrorException
 import com.erikschouten.usermodule.service.AppUserService
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.validation.FieldError
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.validation.Valid
@@ -20,67 +22,57 @@ class AppUserController(private val appUserService: AppUserService,
                         private val appUserUtil: AppUserUtil) {
 
     @GetMapping("/{id}")
-    fun get(@PathVariable id: UUID): ResponseEntity<AppUserDTO> =
+    fun get(@PathVariable id: UUID): ResponseEntity<out Any> =
             try {
                 ResponseEntity.status(HttpStatus.OK).body(AppUserDTO(appUserUtil.get(id)))
-            } catch (e: NotFoundException) {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @PostMapping
-    fun create(@RequestBody @Valid createAppUserDTO: CreateAppUserDTO): ResponseEntity<Void> =
+    fun create(@RequestBody @Valid createAppUserDTO: CreateAppUserDTO): ResponseEntity<out Any> =
             try {
                 appUserService.create(createAppUserDTO.email, createAppUserDTO.password,
                         createAppUserDTO.authorities.map { SimpleGrantedAuthority(it) }.toSet(), createAppUserDTO.locked)
                 ResponseEntity.status(HttpStatus.CREATED).build()
-            } catch (ex: AlreadyExistsException) {
-                ResponseEntity.status(HttpStatus.CONFLICT).build()
-            } catch (ex: InvalidParameterException) {
-                ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @PutMapping
-    fun update(@RequestBody @Valid emailDTO: EmailDTO): ResponseEntity<Void> =
+    fun update(@RequestBody @Valid emailDTO: EmailDTO): ResponseEntity<out Any> =
             try {
                 appUserService.update(emailDTO.email)
                 ResponseEntity.status(HttpStatus.ACCEPTED).build()
-            } catch (ex: AlreadyExistsException) {
-                ResponseEntity.status(HttpStatus.CONFLICT).build()
-            } catch (ex: NotFoundException) {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @PutMapping("/{id}")
-    fun update(@PathVariable id: UUID, @RequestBody @Valid updateAppUserDTO: UpdateAppUserDTO): ResponseEntity<Void> =
+    fun update(@PathVariable id: UUID, @RequestBody @Valid updateAppUserDTO: UpdateAppUserDTO): ResponseEntity<out Any> =
             try {
                 appUserService.update(id, updateAppUserDTO.email, updateAppUserDTO.authorities.map { SimpleGrantedAuthority(it) }.toSet(), updateAppUserDTO.locked)
                 ResponseEntity.status(HttpStatus.ACCEPTED).build()
-            } catch (ex: AlreadyExistsException) {
-                ResponseEntity.status(HttpStatus.CONFLICT).build()
-            } catch (ex: NotFoundException) {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-            } catch (ex: InvalidParameterException) {
-                ResponseEntity.status(HttpStatus.PRECONDITION_REQUIRED).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @PutMapping("/password")
-    fun changePassword(@RequestBody @Valid changePasswordDTO: ChangePasswordDTO): ResponseEntity<Void> =
+    fun changePassword(@RequestBody @Valid changePasswordDTO: ChangePasswordDTO): ResponseEntity<out Any> =
             try {
                 appUserService.changePassword(changePasswordDTO.currentPassword, changePasswordDTO.newPassword)
                 ResponseEntity.status(HttpStatus.ACCEPTED).build()
-            } catch (ex: NotFoundException) {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-            } catch (ex: InvalidParameterException) {
-                ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @PutMapping("/{id}/password")
-    fun changePassword(@PathVariable id: UUID, @RequestBody @Valid passwordDTO: PasswordDTO): ResponseEntity<Void> =
+    fun changePassword(@PathVariable id: UUID, @RequestBody @Valid passwordDTO: PasswordDTO): ResponseEntity<out Any> =
             try {
                 appUserService.changePassword(id, passwordDTO.password)
                 ResponseEntity.status(HttpStatus.ACCEPTED).build()
-            } catch (ex: NotFoundException) {
-                ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+            } catch (ex: FieldErrorException) {
+                ex.toResponse()
             }
 
     @GetMapping
