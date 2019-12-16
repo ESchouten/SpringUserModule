@@ -83,9 +83,9 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      * Used in account settings
      */
     fun changePassword(currentPassword: String, newPassword: String) {
-        if (currentPassword == newPassword) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "password")
+        if (currentPassword == newPassword) throw FieldErrorException(CustomFieldErrors.SAME_PASSWORD.name, "user", "password")
         val appUser = appUserUtil.findCurrent()
-        if (!encoder.matches(currentPassword, appUser.password)) throw FieldErrorException(CustomFieldErrors.SAME_PASSWORD.name, "user", "password")
+        if (!encoder.matches(encoder.encode(currentPassword), appUser.password)) throw FieldErrorException("Wrong current password")
         doChangePassword(appUser, newPassword)
     }
 

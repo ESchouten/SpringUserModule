@@ -24,8 +24,7 @@ class AppUserServiceTests {
     private val appUserRepository = mock<AppUserRepository>()
     private val appUserUtil = mock<AppUserUtil>()
     private val passwordEncoder = mock<PasswordEncoder>()
-    private val roleValidator = mock<RoleValidator>()
-    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder, roleValidator)
+    private val appUserService = AppUserService(appUserRepository, appUserUtil, passwordEncoder, RoleValidator())
 
     @Test
     fun validAppUserCreation() {
@@ -42,17 +41,6 @@ class AppUserServiceTests {
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("appUserUpdate@headon.nl", "p")
         whenever(appUserUtil.findCurrent()).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
         whenever(appUserRepository.save(any<AppUser>())).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
-
-        appUserService.update("appUserUpdate@gmail.com")
-    }
-
-    @Test(expected = AlreadyExistsException::class)
-    fun appUserUpdateUsernameAlreadyInUse() {
-        SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("appUserUpdate@headon.nl", "p")
-        whenever(appUserUtil.get("appUserUpdate@headon.nl"))
-                .thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
-        whenever(appUserUtil.emailInUse("appUserUpdate@gmail.com")).doThrow(FieldErrorException::class)
-        whenever(appUserUtil.findCurrent()).thenReturn(AppUserBuilder(email = "appUserUpdate@headon.nl").build())
 
         appUserService.update("appUserUpdate@gmail.com")
     }
@@ -85,13 +73,13 @@ class AppUserServiceTests {
         val password = passwordEncoder.encode("p")
 
         whenever(appUserUtil.findCurrent())
-                .thenReturn(AppUserBuilder(email = "changePasswordUser@headon.nl", password = password).build())
+                .thenReturn(AppUserBuilder(email = "changePasswordUser@headon.nl", password = password, encoder = passwordEncoder).build())
 
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("changePasswordUser@headon.nl", "p")
         appUserService.changePassword("p", "q")
     }
 
-    @Test(expected = InvalidParameterException::class)
+    @Test(expected = FieldErrorException::class)
     fun wrongPasswordChangePasswordUser() {
         whenever(passwordEncoder.encode("p")).thenReturn("vErYsEcUrEpAsSwOrD")
         whenever(passwordEncoder.matches("p", "vErYsEcUrEpAsSwOrD")).thenReturn(true)
@@ -105,7 +93,7 @@ class AppUserServiceTests {
         appUserService.changePassword("asd", "q")
     }
 
-    @Test(expected = InvalidParameterException::class)
+    @Test(expected = FieldErrorException::class)
     fun samePasswordChangePasswordUser() {
         appUserService.changePassword("p", "p")
     }
