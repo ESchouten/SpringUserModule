@@ -27,13 +27,13 @@ class AppUserUtilTests {
         assert(appUser.email == "findCurrentUser@headon.nl")
     }
 
-    @Test
+    @Test(expected = FieldErrorException::class)
     fun emailInUse() {
         whenever(appUserRepository.findByEmail("emailInUse@headon.nl")).thenReturn(Optional.of(AppUserBuilder(email = "emailInUse@headon.nl").build()))
         appUserUtil.emailInUse("emailInUse@headon.nl")
     }
 
-    @Test(expected = FieldErrorException::class)
+    @Test
     fun emailNotInUse() {
         whenever(appUserRepository.findByEmail("emailNotInUse@headon.nl")).thenReturn(Optional.empty())
         appUserUtil.emailInUse("emailNotInUse@headon.nl")
@@ -45,19 +45,13 @@ class AppUserUtilTests {
         assert(appUserUtil.get("findByEmail@headon.nl").email == "findByEmail@headon.nl")
     }
 
-    @Test(expected = NotFoundException::class)
+    @Test(expected = FieldErrorException::class)
     fun findByEmailNotFound() {
         whenever(appUserRepository.findByEmail("findByEmailNotFound@headon.nl")).thenReturn(Optional.empty())
         appUserUtil.get("findByEmailNotFound@headon.nl")
     }
 
-    @Test
-    fun findById() {
-        whenever(appUserRepository.findById(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"))).thenReturn(Optional.of(AppUserBuilder(id = UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"), email = "findById@headon.nl").build()))
-        assert(appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85")).id == UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"))
-    }
-
-    @Test(expected = NotFoundException::class)
+    @Test(expected = FieldErrorException::class)
     fun findByIdNotFound() {
         whenever(appUserRepository.findById(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"))).thenReturn(Optional.empty())
         appUserUtil.get(UUID.fromString("befa7c20-20ae-42dd-ad1f-b061cce7ad85"))
@@ -69,7 +63,7 @@ class AppUserUtilTests {
         assert(appUserUtil.loadUserByUsername("loadByUsername@headon.nl").username == "loadByUsername@headon.nl")
     }
 
-    @Test(expected = UsernameNotFoundException::class)
+    @Test(expected = FieldErrorException::class)
     fun loadByUsernameNotFound() {
         whenever(appUserRepository.findByEmail("findByEmailNotFound@headon.nl")).thenReturn(Optional.empty())
         appUserUtil.loadUserByUsername("findByEmailNotFound@headon.nl")
