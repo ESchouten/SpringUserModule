@@ -70,10 +70,9 @@ class AppUserServiceTests {
         whenever(passwordEncoder.encode("q")).thenReturn("DiFfErEnTvErYsEcUrEpAsSwOrD")
         whenever(passwordEncoder.matches("p", "vErYsEcUrEpAsSwOrD")).thenReturn(true)
 
-        val password = passwordEncoder.encode("p")
+        val appUser = AppUserBuilder(email = "changePasswordUser@headon.nl", password = "p", encoder = passwordEncoder).build()
 
-        whenever(appUserUtil.findCurrent())
-                .thenReturn(AppUserBuilder(email = "changePasswordUser@headon.nl", password = password, encoder = passwordEncoder).build())
+        whenever(appUserUtil.findCurrent()).thenReturn(appUser)
 
         SecurityContextHolder.getContext().authentication = UsernamePasswordAuthenticationToken("changePasswordUser@headon.nl", "p")
         appUserService.changePassword("p", "q")
