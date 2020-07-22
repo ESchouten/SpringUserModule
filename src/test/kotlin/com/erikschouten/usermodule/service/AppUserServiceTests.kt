@@ -1,15 +1,12 @@
 package com.erikschouten.usermodule.service
 
-import com.erikschouten.customclasses.exceptions.AlreadyExistsException
-import com.erikschouten.customclasses.exceptions.InvalidParameterException
+import com.erikschouten.customclasses.exceptions.handling.FieldErrorException
 import com.erikschouten.usermodule.AppUserBuilder
-import com.erikschouten.usermodule.errorHandeling.FieldErrorException
 import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.validator.RoleValidator
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockitokotlin2.any
-import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test

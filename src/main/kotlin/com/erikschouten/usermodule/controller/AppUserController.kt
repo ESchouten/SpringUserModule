@@ -1,17 +1,14 @@
 package com.erikschouten.usermodule.controller
 
-import com.erikschouten.customclasses.exceptions.AlreadyExistsException
-import com.erikschouten.customclasses.exceptions.InvalidParameterException
-import com.erikschouten.customclasses.exceptions.NotFoundException
+import com.erikschouten.customclasses.exceptions.handling.FieldErrorException
 import com.erikschouten.usermodule.controller.dto.`in`.*
 import com.erikschouten.usermodule.controller.dto.out.AppUserDTO
-import com.erikschouten.usermodule.errorHandeling.FieldErrorException
+import com.erikschouten.usermodule.errorhandeling.toResponse
 import com.erikschouten.usermodule.service.AppUserService
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.validation.FieldError
 import org.springframework.web.bind.annotation.*
 import java.util.*
 import javax.validation.Valid

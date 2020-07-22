@@ -1,10 +1,8 @@
 package com.erikschouten.usermodule.service
 
-import com.erikschouten.customclasses.exceptions.AlreadyExistsException
 import com.erikschouten.customclasses.exceptions.InvalidParameterException
-import com.erikschouten.usermodule.errorHandeling.CustomFieldErrors
-import com.erikschouten.usermodule.errorHandeling.FieldErrorException
-import com.erikschouten.usermodule.errorHandeling.FieldErrors
+import com.erikschouten.customclasses.exceptions.handling.FieldErrorException
+import com.erikschouten.usermodule.errorhandeling.CustomFieldErrors
 import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.validator.RoleValidator
 import com.erikschouten.usermodule.repository.AppUserRepository
@@ -83,9 +81,9 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      * Used in account settings
      */
     fun changePassword(currentPassword: String, newPassword: String) {
-        if (currentPassword == newPassword) throw FieldErrorException(CustomFieldErrors.SAME_PASSWORD.name, "user", "password")
+        if (currentPassword == newPassword) throw FieldErrorException("user", "password", description = CustomFieldErrors.SAME_PASSWORD.name)
         val appUser = appUserUtil.findCurrent()
-        if (!encoder.matches(currentPassword, appUser.password)) throw FieldErrorException("Wrong current password")
+        if (!encoder.matches(currentPassword, appUser.password)) throw FieldErrorException("user", "password", description = "Wrong current password")
         doChangePassword(appUser, newPassword)
     }
 

@@ -1,9 +1,9 @@
 package com.erikschouten.usermodule.service.util
 
-import com.erikschouten.usermodule.errorHandeling.FieldErrorException
-import com.erikschouten.usermodule.errorHandeling.FieldErrors
+import com.erikschouten.customclasses.exceptions.handling.FieldErrorException
 import com.erikschouten.usermodule.model.AppUser
 import com.erikschouten.usermodule.repository.AppUserRepository
+import org.springframework.http.HttpStatus
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -22,14 +22,14 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
     fun findCurrent() = get(SecurityContextHolder.getContext().authentication.name)
 
     fun emailInUse(email: String) {
-        if (appUserRepository.findByEmail(email).isPresent) throw FieldErrorException(FieldErrors.ALREADY_EXISTS, "user", "email")
+        if (appUserRepository.findByEmail(email).isPresent) throw FieldErrorException("user", "email", HttpStatus.CONFLICT.value())
     }
 
     @Throws(FieldErrorException::class)
-    fun get(email: String): AppUser = appUserRepository.findByEmail(email).orElseThrow { FieldErrorException(FieldErrors.NOT_FOUND, "user") }
+    fun get(email: String): AppUser = appUserRepository.findByEmail(email).orElseThrow { FieldErrorException("user", status = HttpStatus.NOT_FOUND.value()) }
 
     @Throws(FieldErrorException::class)
-    fun get(id: UUID): AppUser = appUserRepository.findById(id).orElseThrow { FieldErrorException(FieldErrors.NOT_FOUND, "user") }
+    fun get(id: UUID): AppUser = appUserRepository.findById(id).orElseThrow { FieldErrorException("user", status = HttpStatus.NOT_FOUND.value()) }
 
     override fun loadUserByUsername(email: String): UserDetails = get(email)
 }

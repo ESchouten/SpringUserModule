@@ -1,8 +1,7 @@
 package com.erikschouten.usermodule.service
 
-import com.erikschouten.customclasses.exceptions.NotFoundException
+import com.erikschouten.customclasses.exceptions.handling.FieldErrorException
 import com.erikschouten.usermodule.AppUserBuilder
-import com.erikschouten.usermodule.errorHandeling.FieldErrorException
 import com.erikschouten.usermodule.repository.AppUserRepository
 import com.erikschouten.usermodule.service.util.AppUserUtil
 import com.nhaarman.mockitokotlin2.mock
@@ -10,7 +9,6 @@ import com.nhaarman.mockitokotlin2.whenever
 import org.junit.Test
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import java.util.*
 
 class AppUserUtilTests {

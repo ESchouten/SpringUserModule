@@ -1,4 +1,4 @@
-package com.erikschouten.usermodule.errorHandeling
+package com.erikschouten.usermodule.errorhandeling
 
 enum class CustomFieldErrors {
     SAME_PASSWORD
