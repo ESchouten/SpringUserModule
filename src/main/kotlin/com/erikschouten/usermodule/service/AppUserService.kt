@@ -80,6 +80,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used in account settings
      */
+    @Throws(FieldErrorException::class)
     fun changePassword(currentPassword: String, newPassword: String) {
         if (currentPassword == newPassword) throw FieldErrorException("user", "password", description = CustomFieldErrors.SAME_PASSWORD.name)
         val appUser = appUserUtil.findCurrent()

@@ -21,6 +21,7 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
      */
     fun findCurrent() = get(SecurityContextHolder.getContext().authentication.name)
 
+    @Throws(FieldErrorException::class)
     fun emailInUse(email: String) {
         if (appUserRepository.findByEmail(email).isPresent) throw FieldErrorException("user", "email", HttpStatus.CONFLICT.value())
     }
