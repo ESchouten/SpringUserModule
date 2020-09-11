@@ -24,6 +24,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used in registration
      */
+    @Throws(FieldErrorException::class)
     fun create(email: String, password: String) = this.create(email, password, emptySet(), false)
 
     /**
@@ -32,9 +33,11 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account creation
      */
+    @Throws(FieldErrorException::class)
     fun create(email: String, password: String, roles: Set<SimpleGrantedAuthority>, locked: Boolean = false) =
             this.create(AppUser(email = email, password = password, encoder = encoder, authorities = roles, locked = locked))
 
+    @Throws(FieldErrorException::class)
     fun create(appUser: AppUser): AppUser {
         appUserUtil.emailInUse(appUser.email)
 
@@ -50,6 +53,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used in account settings
      */
+    @Throws(FieldErrorException::class)
     fun update(email: String) = doUpdate(appUserUtil.findCurrent(), email, null, null)
 
     /**
@@ -58,8 +62,10 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account management
      */
+    @Throws(FieldErrorException::class)
     fun update(id: UUID, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?) = doUpdate(appUserUtil.get(id), email, roles, locked)
 
+    @Throws(FieldErrorException::class)
     private fun doUpdate(appUser: AppUser, email: String?, roles: Set<SimpleGrantedAuthority>?, locked: Boolean?): AppUser {
         if (!email.isNullOrBlank() && appUser.email != email) appUserUtil.emailInUse(email)
 
@@ -94,6 +100,7 @@ class AppUserService(private val appUserRepository: AppUserRepository,
      *
      * Used by Administrators account management
      */
+    @Throws(FieldErrorException::class)
     fun changePassword(id: UUID, newPassword: String) {
         val appUser = appUserUtil.get(id)
         this.doChangePassword(appUser, newPassword)

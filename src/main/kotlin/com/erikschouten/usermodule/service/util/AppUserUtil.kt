@@ -19,6 +19,7 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
      *
      * Used in account settings
      */
+    @Throws(FieldErrorException::class)
     fun findCurrent() = get(SecurityContextHolder.getContext().authentication.name)
 
     @Throws(FieldErrorException::class)
@@ -32,5 +33,6 @@ class AppUserUtil(private val appUserRepository: AppUserRepository) : UserDetail
     @Throws(FieldErrorException::class)
     fun get(id: UUID): AppUser = appUserRepository.findById(id).orElseThrow { FieldErrorException("user", status = HttpStatus.NOT_FOUND.value()) }
 
+    @Throws(FieldErrorException::class)
     override fun loadUserByUsername(email: String): UserDetails = get(email)
 }
