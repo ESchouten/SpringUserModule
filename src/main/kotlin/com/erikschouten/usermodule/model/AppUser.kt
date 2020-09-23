@@ -12,7 +12,7 @@ import javax.persistence.*
 @JsonIgnoreType
 open class AppUser(
         @Id @GeneratedValue @Column(columnDefinition = "BINARY(16)", nullable = false)
-        val id: UUID = UUID.randomUUID(),
+        open val id: UUID = UUID.randomUUID(),
         @Column(unique = true, nullable = false)
         open var email: String,
         @Column(nullable = false)
