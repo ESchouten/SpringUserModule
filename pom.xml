@@ -21,7 +21,7 @@
         <javax-persistence.version>1.0.2.Final</javax-persistence.version>
         <javax-el.version>3.0.1-b11</javax-el.version>
         <mockito-kotlin.version>2.2.0</mockito-kotlin.version>
-        <junit.version>4.13</junit.version>
+        <junit.version>4.13.1</junit.version>
         <hibernate-validator.version>7.0.0.Alpha6</hibernate-validator.version>
         <maven-source-plugin.version>3.2.1</maven-source-plugin.version>
         <jackson.version>2.11.2</jackson.version>
