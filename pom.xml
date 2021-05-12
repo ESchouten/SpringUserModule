@@ -15,7 +15,7 @@
         <customclasses.version>0.1.12</customclasses.version>
 
         <spring-web.version>5.2.8.RELEASE</spring-web.version>
-        <spring-security.version>5.4.0</spring-security.version>
+        <spring-security.version>5.4.4</spring-security.version>
         <spring-data.version>2.3.3.RELEASE</spring-data.version>
         <javax-validation.version>2.0.1.Final</javax-validation.version>
         <javax-persistence.version>1.0.2.Final</javax-persistence.version>
