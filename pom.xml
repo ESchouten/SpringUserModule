@@ -11,7 +11,7 @@
     <!--mvn versions:update-parent versions:update-properties-->
     <!--To extract versions to properties: opt + cmd + V-->
     <properties>
-        <kotlin.version>1.4.10</kotlin.version>
+        <kotlin.version>1.6.0</kotlin.version>
         <customclasses.version>0.1.12</customclasses.version>
 
         <spring-web.version>5.2.8.RELEASE</spring-web.version>
